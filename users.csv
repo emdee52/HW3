@@ -1,0 +1,6 @@
+type,name,balance,address,phone,id
+'seller','Jake',520,'jake@jake.jo','719-101-0000',1
+'buyer','Matt',20,'matt@matt.co','720-000-0000',2
+'buyer','Matt',10,'otherMatt@matt.co','303-335-3795',3
+'buyer','JFC',0,'jfc@fishing.com','720-246-6464',4
+'seller','Helen',80,'Helen.katch@business.edu','303-221-1321',5
