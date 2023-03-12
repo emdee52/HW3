@@ -1,6 +1,4 @@
-type,name,balance,address,phone,id
-'seller','Jake',520,'jake@jake.jo','719-101-0000',1
-'buyer','Matt',20,'matt@matt.co','720-000-0000',2
-'buyer','Matt',10,'otherMatt@matt.co','303-335-3795',3
-'buyer','JFC',0,'jfc@fishing.com','720-246-6464',4
-'seller','Helen',80,'Helen.katch@business.edu','303-221-1321',5
+1,seller,John,300,419 Lake road,719-101-0000
+2,buyer,James,25,29 Smith Road,720-000-0000
+3,buyer,Sarah,100,444 Nevada ct,303-335-3795
+4,buyer,Jake,0,10449 46th ave,720-246-6464
