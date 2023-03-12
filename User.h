@@ -4,11 +4,15 @@
 #include <vector>
 #include "Product.h"
 
+// struct Message;
+class User;
+
 enum class UserType{SELLER, BUYER, USER};
 
 struct Message{
   std::string data;
-  int fromId;
+  User * from;
+  User * to;
 };
 
 class User{
@@ -39,7 +43,7 @@ class User{
     std::string getPhone() const { return phone_; }
     bool printMessages();
     void viewMessages();
-    void respond();
+    void respond(int index);
     virtual bool overview(){};
     void printReport();
 };

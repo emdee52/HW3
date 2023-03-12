@@ -1,8 +1,9 @@
 #include "User.h"
 
-void createMessage(Message &m, std::string data, int id) {
+void createMessage(Message &m, std::string data, User * from, User * to) {
   m.data = data;
-  m.fromId = id;
+  m.from = from;
+  m.to = to;
 }
 
 int User::count = 0;
@@ -21,34 +22,53 @@ bool User::printMessages() {
     std::cout << "No messages" << std::endl;
     return false;
   }
+
   std::cout << "=========MESSAGES=========" << std::endl;
   for (int i = 0; i < messages_.size(); i++){
-    std::cout << "(" << i << ") From User " << messages_[i].fromId << ": " << messages_[i].data << std::endl;
+    if (messages_[i].from->getId() != this->id_)
+      std::cout << "(" << i + 1 << ") From " << messages_[i].from->getName() << ": " << messages_[i].data << std::endl;
+    else
+      std::cout << "(" << i + 1 << ") To " << messages_[i].to->getName() << ": " << messages_[i].data << std::endl;
   }
+  std::cout << "(0) Exit" << std::endl;
   return true;
 }
 
 void User::viewMessages(){
-  int response;
   bool hasMessage;
   hasMessage = printMessages();
 
   if (hasMessage){
-    std::cout << "Respond to messages? 1:(yes) 2:(no)" << std::endl;
-    std::cin >> response;
-    
-    while(response == 1){
+    while(true){
       int option;
-      std::cout << "Select message to respond to: " ;
+      std::cout << "Choose a digit to respond to or exit: " ;
       std::cin >> option;
+      if (option == 0)
+        break;
+      else if (option > messages_.size())
+        continue;
+      respond(option - 1);
+      printMessages();
     }
   }
 }
 
-void User::respond(){
+void User::respond(int index){
+  Message m;
   std::string message;
-  std::cout << "Responding to message: " << std::endl;
+  User * to = messages_[index].from;
+  
+  if (to->getId() == this->getId()) {
+    std::cout << "[INFO] Cannot respond to own message, choose a different message" << std::endl;
+    return;
+  }
+    
+  std::cout << "Responding to " << to->getName() << "'s message (" << index + 1 << "): ";
   std::cin >> message;
+  createMessage(m, message, this, to);
+
+  to->addMessage(m);
+  this->addMessage(m);  
 }
 
 void Seller::addProductForSale(){}
@@ -65,9 +85,9 @@ void Buyer::viewPurchases(){}
 void Buyer::sendMessage(User &to){
   Message m;
   std::string message;
-  std::cout << "Send message to buyer: ";
+  std::cout << "Send message to seller: ";
   std::cin >> message;
-  createMessage(m, message, to.getId());
+  createMessage(m, message, this, &to);
 
   to.addMessage(m);
   this->addMessage(m);

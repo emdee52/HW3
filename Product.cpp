@@ -1,9 +1,5 @@
 #include "Product.h"
 
-void Product::setPrice(double price){}
-void Product::setId(int id){}
-void Product::setQuality(std::string quality){}
-void Product::setName(std::string name){}
 
 double Product::getPrice(){}
 int Product::getId(){}

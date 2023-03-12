@@ -15,17 +15,12 @@ class Product{
   public:
     Product(){}
 
-    Product(int id, double price, std::string name, std::string quality){
-      id_ = id;
-      price_ = price;
-      name_ = name;
-      quality_ = quality;
-    }
+    Product(int id, double price, std::string name, std::string quality) : id_(id), price_(price), name_(name), quality_(quality){}
 
-    void setPrice(double price);
-    void setId(int id);
-    void setQuality(std::string quality);
-    void setName(std::string name);
+    void setPrice(double price) { price_ = price; }
+    void setId(int id) { id_ = id; }
+    void setQuality(std::string quality) { quality_ =  quality; }
+    void setName(std::string name) { name_ = name; }
 
     double getPrice();
     int getId();
@@ -40,11 +35,7 @@ class Vehicle: public Product{
     std::string make;
     int year;
   public:
-    Vehicle(int id, double price, std::string name, std::string quality){
-      id_ = id;
-      price_ = price;
-      name_ = name;
-      quality_ = quality;
+    Vehicle(int id, double price, std::string name, std::string quality) : Product(id, price, name, quality){
       // std::cout << "Vehicle" << std::endl;
     }
     std::string getModel();
@@ -56,11 +47,7 @@ class Furniture: public Product{
   private:
     std::string size;
   public:
-    Furniture(int id, double price, std::string name, std::string quality){
-      id_ = id;
-      price_ = price;
-      name_ = name;
-      quality_ = quality;
+    Furniture(int id, double price, std::string name, std::string quality) : Product(id, price, name, quality){
       // std::cout << "Furniture" << std::endl;
     }
     std::string getSize();
@@ -71,11 +58,7 @@ class Book: public Product{
     std::string genre;
     std::string author;
   public:
-    Book(int id, double price, std::string name, std::string quality){
-      id_ = id;
-      price_ = price;
-      name_ = name;
-      quality_ = quality;
+    Book(int id, double price, std::string name, std::string quality) : Product(id, price, name, quality){
       // std::cout << "Book" << std::endl;
     }
     std::string getGenre();
@@ -86,11 +69,7 @@ class Tool: public Product{
   private:
     std::string type;
   public:
-    Tool(int id, double price, std::string name, std::string quality){
-      id_ = id;
-      price_ = price;
-      name_ = name;
-      quality_ = quality;
+    Tool(int id, double price, std::string name, std::string quality) : Product(id, price, name, quality){
       // std::cout << "Tool" << std::endl;
     }
     std::string getType();
@@ -100,11 +79,7 @@ class Clothes: public Product{
   private:
     std::string type;
   public:
-    Clothes(int id, double price, std::string name, std::string quality){
-      id_ = id;
-      price_ = price;
-      name_ = name;
-      quality_ = quality;
+    Clothes(int id, double price, std::string name, std::string quality) : Product(id, price, name, quality){
       // std::cout << "Clothes" << std::endl;
     }
     std::string getType();
