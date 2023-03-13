@@ -59,9 +59,12 @@ int main() {
   //     std::cout << x.first << ": " << x.second->getName() << "\n";
   // }
   Seller sella(0, "JohnSela", "Johnstown", "303000303");
-  Buyer buya(0, "BobBuya", "Bobertstown", "720000720");
-  buya.sendMessage(sella);
-  sella.viewMessages();
+  // Buyer buya(0, "BobBuya", "Bobertstown", "720000720");
+  // sella.updateInfo();
+  // sella.printReport();
+  sella.menu();
+  // buya.sendMessage(sella);
+  // sella.viewMessages();
   // sella.printReport();
   // buya.printReport();
   // sella.printMessages();

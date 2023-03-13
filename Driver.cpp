@@ -12,3 +12,7 @@ void Driver::addUsers(User u){}
 std::vector<Product> Driver::getActiveProducts(){}
 std::vector<Product> Driver::getBids(){}
 std::vector<User> Driver::getUsers(){}
+
+void menu(){
+  
+}

@@ -1,36 +1,55 @@
 #include "Product.h"
 
+int Product::count = 0;
 
-double Product::getPrice(){}
-int Product::getId(){}
-std::string Product::getQuality(){}
+void Product::addBid(int uid, double bid) {
+  if (!this->getBidStatus()){
+    std::cout << "[INFO] Bidding is closed" << std::endl;
+    return;
+  }
+  bids[uid] = bid;
+}
 
-Product* Product::productFactory(ProductCategory pc, int id, double price, std::string name, std::string quality){
+std::map<int, double> Product::getHighestBid(){
+  std::map<int, double> highestBid;
+  double maxBid = price_;
+  int uid;
+
+  for (const auto &[key, value] : bids){
+    if (maxBid < value){
+      maxBid = value;
+      uid = key;
+    }
+  }
+
+  std::cout << "Highest bid is $" << maxBid << " by User " << uid << std::endl;
+
+  highestBid[uid] = maxBid;
+  return highestBid;
+}
+
+void Product::viewBids(){
+  for (const auto &[key, value] : bids)
+    std::cout << "bids[" << key << "] = " << value << std::endl;
+}
+
+Product* Product::productFactory(ProductCategory pc, double price, std::string name, std::string quality){
   switch(pc){
     case ProductCategory::Vehicle:
-      return new Vehicle(id, price, name, quality);
+      return new Vehicle(price, name, quality);
     case ProductCategory::Furniture:
-      return new Furniture(id, price, name, quality);
+      return new Furniture(price, name, quality);
     case ProductCategory::Tool:
-          return new Tool(id, price, name, quality);
+          return new Tool(price, name, quality);
     case ProductCategory::Book:
-      return new Book(id, price, name, quality);
+      return new Book(price, name, quality);
     case ProductCategory::Clothes:
-      return new Clothes(id, price, name, quality);
+      return new Clothes(price, name, quality);
     default:
       return new Product();
   }
 }
 
-std::string Vehicle::getModel(){}
-std::string Vehicle::getMake(){}
-int Vehicle::getYear(){}
-
-std::string Furniture::getSize(){}
-
-std::string Book::getGenre(){}
-std::string Book::getAuthor(){}
-
-std::string Tool::getType(){}
-
-std::string Clothes::getType(){}
+void Product::setBidStatus(bool status) {
+  this->openBids = status;
+}

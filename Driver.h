@@ -12,7 +12,7 @@ class Driver{
       bids = {};
       users = {};
     };
-    std::vector<Product> activeProducts;
+    std::map<int, Product *> activeProducts;
     std::vector<Product> bids;
     std::map<int, Product *> finishedBids;
     std::vector<User> users;
@@ -28,11 +28,10 @@ class Driver{
     void saveBidInfo(Product p);
     void run(User u);
 
-    void addFinishedBid(int id, Product * p) { finishedBids[id] = p; }
-    void addActiveProducts(Product p);
+    void addFinishedBid(int uid, Product * p) { finishedBids[uid] = p; }
+    void addActiveProducts(int uid, Product * p) { activeProducts[uid] = p; }
     void addBids(Product p);
     void addUsers(User u);
-
 
     std::vector<Product> getActiveProducts();
     std::vector<Product> getBids();

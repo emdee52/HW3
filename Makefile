@@ -7,4 +7,4 @@ clean:
 	rm -f main *.o
 
 main: main.cpp
-	$(CXX) $(CXXFLAGS) main.cpp user.cpp -o main
+	$(CXX) $(CXXFLAGS) main.cpp user.cpp product.cpp -o main
