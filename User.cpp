@@ -151,7 +151,7 @@ void User::updateInfo(){
   }
 }
 
-void Seller::addProductForSale(){
+Product * Seller::addProductForSale(){
   int option;
   ProductCategory category = ProductCategory::Product;
   Product * listing;
@@ -199,6 +199,8 @@ void Seller::addProductForSale(){
   products.push_back(listing);
 
   overview();
+
+  return listing;
 }
 
 void Seller::viewProducts(){
@@ -271,15 +273,6 @@ void Seller::assignBidStatus() {
   }
 }
 
-
-bool Seller::closeBid(Product &p){
-  p.setBidStatus(false);
-}
-
-bool Seller::openBid(Product &p){
-  p.setBidStatus(true);
-}
-
 void Seller::menu(){
   int option;
 
@@ -322,9 +315,21 @@ void Seller::menu(){
 
 void Buyer::browseProducts(){}
 
-void Buyer::addBidToProduct(){}
+void Buyer::addBidToProduct(int pid, double bid){
+  bids[pid] = bid;
+}
 
-void Buyer::viewPurchases(){}
+void Buyer::viewPurchases(){
+  std::cout << "Purchased products: " << std::endl;
+
+  if (purchases.size() < 1) {
+    std::cout << "  [INFO] No purchases" << std::endl;
+    return;
+  }
+
+  for (int i = 0; i < purchases.size(); i++)
+    std::cout << "   (" << i + 1 << ") " << purchases[i]->getName() << ": Price[$" << purchases[i]->getPrice() << "], " << "Quality[" << purchases[i]->getQuality() << "]" << std::endl;
+}
 
 void Buyer::sendMessage(User &to){
   Message m;
@@ -374,5 +379,16 @@ void Buyer::menu(){
   
   default:
     break;
+  }
+}
+
+User * User::userFactory(UserType type, double balance, std::string name, std::string addy, std::string phone){
+  switch(type){
+    case UserType::BUYER:
+      return new Buyer(balance, name, addy, phone);
+    case UserType::SELLER:
+      return new Seller(balance, name, addy, phone);
+    default:
+      return new User(balance, name, addy, phone);
   }
 }

@@ -12,10 +12,10 @@ class Driver{
       bids = {};
       users = {};
     };
-    std::map<int, Product *> activeProducts;
+    std::vector<Product *> activeProducts;
     std::vector<Product> bids;
     std::map<int, Product *> finishedBids;
-    std::vector<User> users;
+    std::vector<User *> users;
 
   public:
 
@@ -26,17 +26,23 @@ class Driver{
     }
     
     void saveBidInfo(Product p);
-    void run(User u);
+    User * initializeUser();
+    void run();
 
     void addFinishedBid(int uid, Product * p) { finishedBids[uid] = p; }
-    void addActiveProducts(int uid, Product * p) { activeProducts[uid] = p; }
+    void addActiveProducts(Product * p) { activeProducts.push_back(p); }
     void addBids(Product p);
-    void addUsers(User u);
+    void addUser(User * u) { users.push_back(u); }
+
+    void viewUsers();
+    void viewActiveProducts();
 
     std::vector<Product> getActiveProducts();
     std::vector<Product> getBids();
     std::map<int, Product *> getFinishedBids() const { return finishedBids; }
     std::vector<User> getUsers();
+
+    void menu(User * user);
 
     Driver(Driver const&) = delete;
     void operator=(Driver const&) = delete;

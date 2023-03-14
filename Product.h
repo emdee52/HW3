@@ -6,6 +6,8 @@
 
 enum class ProductCategory {Vehicle, Furniture, Book, Tool, Clothes, Product}; 
 
+
+
 class Product{
   protected:
     int id_;
@@ -37,6 +39,7 @@ class Product{
     int getId() const { return id_; }
     std::string getQuality() const { return quality_; }
     std::string getName() const { return name_; }
+    ProductCategory getCategory() const { return category; }
 
     static Product* productFactory(ProductCategory pc, double bid, std::string name, std::string quality);
 };

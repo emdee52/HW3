@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 #include <string>
-#include "User.h"
+#include "Driver.h"
 
 
 std::vector<std::string> splitter(std::string str){
@@ -58,11 +58,14 @@ int main() {
   // for (const auto& x : m) { // prints out the map (id : productName)
   //     std::cout << x.first << ": " << x.second->getName() << "\n";
   // }
-  Seller sella(0, "JohnSela", "Johnstown", "303000303");
+  Driver & ebay = Driver::getInstance();
+  ebay.run();
+  
+  // Seller sella(0, "JohnSela", "Johnstown", "303000303");
   // Buyer buya(0, "BobBuya", "Bobertstown", "720000720");
   // sella.updateInfo();
   // sella.printReport();
-  sella.menu();
+  // sella.menu();
   // buya.sendMessage(sella);
   // sella.viewMessages();
   // sella.printReport();

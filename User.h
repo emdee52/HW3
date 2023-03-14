@@ -46,6 +46,7 @@ class User{
     std::string getName() const { return name_; }
     std::string getAddress() const { return address_; }
     std::string getPhone() const { return phone_; }
+    UserType getType() const { return type; }
 
     bool printMessages();
     void viewMessages();
@@ -53,6 +54,7 @@ class User{
     void respond(int index);
 
     virtual bool overview(){};
+    static User* userFactory(UserType type, double balance, std::string name, std::string addy, std::string phone);
 };
 
 class Seller: public User{
@@ -65,19 +67,19 @@ class Seller: public User{
       type = UserType::SELLER;
     }
 
-    void addProductForSale();
+    Product * addProductForSale();
     void viewProducts();
     void viewSoldProducts();
     bool overview();
     void assignBidStatus();
-    bool closeBid(Product &p);
-    bool openBid(Product &p);
     void menu();
+
 };
 
 class Buyer: public User{
   private:
-    std::vector<Product> purchases;
+    std::vector<Product *> purchases;
+    std::map<int, double> bids;
   public:
     Buyer(){ type = UserType::BUYER; }
     Buyer(double balance, std::string name, std::string addy, std::string phone) : User(balance, name, addy, phone){
@@ -85,7 +87,7 @@ class Buyer: public User{
     }
 
     void browseProducts();
-    void addBidToProduct();
+    void addBidToProduct(int pid, double bid);
     void viewPurchases();
     void sendMessage(User &to);
     bool overview();
