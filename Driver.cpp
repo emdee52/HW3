@@ -50,12 +50,23 @@ std::ostream& operator<< ( std::ostream& os, ProductCategory category )
   }
 }
 
-void Driver::saveBidInfo(Product p){}
-
 void Driver::run(){
+  std::ofstream outfile;
+  std::string line;
+
   readUsers();
   readHistoricalProducts();
   User * user = initializeUser();
+
+  // if(user->getType() ==  UserType::SELLER)
+  //   line = "seller," + user->getName() + "," + user->getAddress() + "," + user->getPhone();
+  // else if (user->getType() ==  UserType::BUYER)
+  //   line = "seller," + user->getName() + "," + user->getAddress() + "," + user->getPhone();
+
+  // outfile.open("users.csv", std::ios_base::app);
+  // outfile << std::endl;
+  // outfile << line; 
+
   viewUsers();
   menu(user);
 }
@@ -188,9 +199,6 @@ void Driver::viewActiveProducts(Buyer * buya){
   }
 }
 
-std::vector<Product> Driver::getActiveProducts(){}
-std::vector<User> Driver::getUsers(){}
-
 void Driver::menu(User * user){
   int option = 99;
 
@@ -213,7 +221,7 @@ void Driver::menu(User * user){
           std::string category;
           addActiveProducts(p);
           std::ofstream outfile;
-          outfile.open("products.csv", std::ios_base::app); // append instead of overwrite
+          outfile.open("products.csv", std::ios_base::app); 
           if (p->getCategory() == ProductCategory::Book) category = "book";
           else if (p->getCategory() == ProductCategory::Clothes) category = "clothes";
           else if (p->getCategory() == ProductCategory::Vehicle) category = "vehicle";
@@ -351,6 +359,7 @@ void Driver::readHistoricalProducts(){
   std::vector<std::string> s;
   std::ifstream intfile("products.csv");
   std::string line;
+
   while (std::getline(intfile, line)){
     Product * p;
     s = splitter(line);

@@ -6,11 +6,11 @@
 #include <string>
 #include <iostream>
 
-// struct Message;
 class User;
 
 enum class UserType{SELLER, BUYER, USER};
 
+// struct Message;
 struct Message{
   std::string data;
   User * from;
@@ -32,6 +32,7 @@ class User{
     User(){}
     User(double balance, std::string name, std::string addy, std::string phone) : id_(++count), balance_(balance), name_(name), address_(addy), phone_(phone){}
     
+    // Setters
     void setBalance(double bal) { balance_ = bal; }
     void setId(int id) { id_ = id; }
     void setName(std::string name) { name_ = name; }
@@ -39,8 +40,9 @@ class User{
     void setPhone(std::string phone) { phone_ = phone; }
     void addMessage(Message message) { messages_.push_back(message); }
 
-    void updateInfo();
+    void updateInfo(); // update user info interface
 
+    // Getters
     double getBalance() const { return balance_; }
     int getId() const { return id_; }
     std::string getName() const { return name_; }
@@ -48,13 +50,13 @@ class User{
     std::string getPhone() const { return phone_; }
     UserType getType() const { return type; }
 
-    bool printMessages();
-    void viewMessages();
-    void viewBalance();
-    void respond(int index);
+    bool printMessages(); // prints all current messages
+    void viewMessages(); // view messages/respond to interface
+    void viewBalance(); // view balance interface
+    void respond(int index); // respond to messages
 
-    virtual void overview(){};
-    static User* userFactory(UserType type, double balance, std::string name, std::string addy, std::string phone);
+    virtual void overview(){}; // empty for the parent class
+    static User* userFactory(UserType type, double balance, std::string name, std::string addy, std::string phone); // generates a user instance based on params
 };
 
 class Seller: public User{
@@ -67,8 +69,8 @@ class Seller: public User{
       type = UserType::SELLER;
     }
 
-    Product * addProductForSale();
-    void productSold(Product * p);
+    Product * addProductForSale(); // interface to list a product for sale
+    void productSold(Product * p); // sells a product, removes it from list
     void viewProducts();
     void viewSoldProducts();
     std::vector<Product *> getProducts() { return products; }

@@ -205,6 +205,7 @@ void Seller::productSold(Product * p){
   for (int i = products.size() - 1; i > 0; i--)
   {
     if (p->getId() == products[i]->getId()){
+      balance_ += products[i]->getHighestBid().begin()->second;
       products.erase(products.begin() + i);
       break;
     }

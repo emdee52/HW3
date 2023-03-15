@@ -13,37 +13,35 @@ class Driver{
     };
     std::vector<Product *> activeProducts;
     std::map<int, Product *> finishedBids;
+    std::map<int, Product *> bids;
     std::vector<User *> users;
 
   public:
 
-    static Driver& getInstance() {
+    static Driver& getInstance() { // to get the instance of the Singleton class
       static Driver instance;
 
       return instance;
     }
     
-    void saveBidInfo(Product p);
-    User * initializeUser();
-    void readUsers();
-    void readHistoricalProducts();
-    void run();
+    User * initializeUser(); // Initializes the human user
+    void readUsers(); // reads from users.csv and initializes them
+    void readHistoricalProducts(); // reads from products.csv and initializes them
+    void run(); // simulates bidToBuy
 
-    void addFinishedBid(int uid, Product * p) { finishedBids[uid] = p; }
-    void addActiveProducts(Product * p) { activeProducts.push_back(p); }
-    void addUser(User * u) { users.push_back(u); }
+    void addFinishedBid(int uid, Product * p) { finishedBids[uid] = p; } // adds a finished bid to the map
+    void addActiveProducts(Product * p) { activeProducts.push_back(p); } // adds an active product to the list
+    void addUser(User * u) { users.push_back(u); } // adds a user to the list
 
-    void viewUsers();
-    void viewActiveProducts(Buyer * buya);
+    void viewUsers(); // prints out current users
+    void viewActiveProducts(Buyer * buya); // prints out current products
 
-    std::vector<Product> getActiveProducts();
-    std::map<int, Product *> getFinishedBids() const { return finishedBids; }
-    std::vector<User> getUsers();
+    std::map<int, Product *> getFinishedBids() const { return finishedBids; } // returns finished bids
 
-    void menu(User * user);
+    void menu(User * user); // menu for user
 
-    Driver(Driver const&) = delete;
-    void operator=(Driver const&) = delete;
+    Driver(Driver const&) = delete; // helps to implement  Singleton class
+    void operator=(Driver const&) = delete; // helps to implement  Singleton class
 };
 
 #endif
