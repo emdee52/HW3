@@ -192,7 +192,7 @@ std::vector<Product> Driver::getActiveProducts(){}
 std::vector<User> Driver::getUsers(){}
 
 void Driver::menu(User * user){
-  int option;
+  int option = 99;
 
   if (user->getType() == UserType::SELLER){
     Seller * sella = static_cast<Seller *>(user);
@@ -239,9 +239,20 @@ void Driver::menu(User * user){
         case 5:
           sella->overview();
           break;
-        case 6:
-          sella->assignBidStatus();
+        case 6: {
+          if (sella->getProducts().size() < 1) {
+            std::cout << "[PLEASE LIST A PRODUCT FIRST]" << std::endl;
+            break;
+          }
+          std::map<bool, Product *> sold;
+          sold = sella->assignBidStatus();
+          if (sold.begin()->first){
+            Product * p = sold.begin()->second;
+            sella->productSold(p);
+            std::cout << "Product " << p->getName() << " sold to Buyer " << p->getHighestBid().begin()->first << " for $" << p->getHighestBid().begin()->second << std::endl;
+          }
           break;
+        }
         default:
           break;
       }
@@ -340,7 +351,7 @@ void Driver::readHistoricalProducts(){
   std::vector<std::string> s;
   std::ifstream intfile("products.csv");
   std::string line;
-  while (intfile >> line){
+  while (std::getline(intfile, line)){
     Product * p;
     s = splitter(line);
     int buyerId = std::stoi(s[0]);

@@ -5,9 +5,6 @@
 #include <string>
 #include "Driver.h"
 
-
-
-
 int main() {
   Driver & ebay = Driver::getInstance();
   ebay.run();

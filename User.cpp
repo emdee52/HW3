@@ -201,6 +201,17 @@ Product * Seller::addProductForSale(){
   return listing;
 }
 
+void Seller::productSold(Product * p){
+  for (int i = products.size() - 1; i > 0; i--)
+  {
+    if (p->getId() == products[i]->getId()){
+      products.erase(products.begin() + i);
+      break;
+    }
+  }
+  soldProducts.push_back(p);
+}
+
 void Seller::viewProducts(){
   std::string strStatus = "";
   bool status;
@@ -246,15 +257,12 @@ void Seller::overview(){
   viewSoldProducts();
 }
 
-void Seller::assignBidStatus() {
+std::map<bool, Product *> Seller::assignBidStatus() {
   int option;
+  std::map<bool, Product *> bp;
+
   std::cout << "=========PRODUCTS=========" << std::endl;
   viewProducts();
-
-  if (products.size() < 1) {
-    std::cout << "[PLEASE LIST A PRODUCT FIRST]" << std::endl;
-    return;
-  }
 
   std::cout << "[CHOOSE A PRODUCT TO OPEN/CLOSE BIDS]" << std::endl;
   std::cin >> option;
@@ -264,50 +272,16 @@ void Seller::assignBidStatus() {
   if (p->getBidStatus()) {
     p->setBidStatus(false);
     std::cout << "[INFO] Bidding closed for Product "  << p->getId() << ": " << p->getName() << std::endl;
+    if (p->getHighestBid().begin()->first != -1){
+      bp[true] = p;
+      return bp;
+    }
   }
   else {
     p->setBidStatus(true);
     std::cout << "[INFO] Bidding open for Product "  << p->getId() << ": " << p->getName() << std::endl;
   }
-}
-
-void Seller::menu(){
-  int option;
-
-  while (option != 0) {
-    std::cout << "=========OPTIONS=========" <<std::endl;
-    std::cout << "(1) List product for sale" << std::endl;
-    std::cout << "(2) Check messages" << std::endl;
-    std::cout << "(3) Check balance" << std::endl;
-    std::cout << "(4) Update user information" << std::endl;
-    std::cout << "(5) Get overview" << std::endl;
-    std::cout << "(6) Open/close bids" << std::endl;
-    std::cout << "(0) Exit" << std::endl;
-    std::cout << "[PICK AN OPTION]" << std::endl;
-    std::cin >> option;
-    switch (option){
-      case 1:
-        addProductForSale();
-        break;
-      case 2: 
-        viewMessages();
-        break;
-      case 3:
-        viewBalance();
-        break;
-      case 4:
-        updateInfo();
-        break;
-      case 5:
-        overview();
-        break;
-      case 6:
-        assignBidStatus();
-        break;
-      default:
-        break;
-    }
-  }
+  return bp;
 }
 
 void Buyer::addBidToProduct(int pid, double bid){
@@ -352,44 +326,6 @@ void Buyer::overview(){
   
   for (int i = 0; i < purchases.size(); i++)
     std::cout << "   (" << i + 1 << ") " << purchases[i]->getName() << ": Price[$" << purchases[i]->getPrice() << "], " << "Quality[" << purchases[i]->getQuality() << "]" << std::endl;
-}
-
-void Buyer::menu(){
-  int option;
-  std::cout << "=========OPTIONS=========" <<std::endl;
-  std::cout << "(1) View products for sale" << std::endl;
-  std::cout << "(2) Check messages" << std::endl;
-  std::cout << "(3) Check balance" << std::endl;
-  std::cout << "(4) Update user information" << std::endl;
-  std::cout << "(5) Get overview" << std::endl;
-  std::cout << "(6) View purchases" << std::endl;
-  std::cout << "(0) Exit" << std::endl;
-  std::cout << "[PICK AN OPTION]" << std::endl;
-
-  std::cin >> option;
-  switch (option)
-  {
-  case 1:
-    break;
-  case 2: 
-    viewMessages();
-    break;
-  case 3:
-    viewBalance();
-    break;
-  case 4:
-    updateInfo();
-    break;
-  case 5:
-    break;
-  case 6:
-    break;
-  case 7:
-    break;
-  
-  default:
-    break;
-  }
 }
 
 User * User::userFactory(UserType type, double balance, std::string name, std::string addy, std::string phone){

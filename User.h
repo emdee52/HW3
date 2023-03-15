@@ -68,11 +68,12 @@ class Seller: public User{
     }
 
     Product * addProductForSale();
+    void productSold(Product * p);
     void viewProducts();
     void viewSoldProducts();
+    std::vector<Product *> getProducts() { return products; }
     void overview();
-    void assignBidStatus();
-    void menu();
+    std::map<bool, Product *> assignBidStatus();
 
 };
 
@@ -89,7 +90,6 @@ class Buyer: public User{
     void viewPurchases();
     void sendMessage(User &to);
     void overview();
-    void menu();
 };
 
 #endif
