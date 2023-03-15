@@ -1,6 +1,6 @@
 #include "Product.h"
 
-int Product::count = 0;
+int Product::count = 0; // static member initialization
 
 void Product::addBid(int uid, double bid) {
   bids[uid] = bid;

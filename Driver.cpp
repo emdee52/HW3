@@ -6,7 +6,8 @@
 #include <fstream>
 #include <string.h>
 
-std::vector<std::string> splitter(std::string str){
+// helper function to split csv lines using the comma delimiter
+std::vector<std::string> splitter(std::string str){ 
   std::vector<std::string> v;
   std::string curr = ""; 
   
@@ -25,6 +26,7 @@ std::vector<std::string> splitter(std::string str){
   return v;
 }
 
+// print operator overload for UserType enum
 std::ostream& operator<<(std::ostream& os, UserType type)
 {
   switch(type)
@@ -36,6 +38,7 @@ std::ostream& operator<<(std::ostream& os, UserType type)
   }
 }
 
+// print operator overload for ProductCategory enum
 std::ostream& operator<< ( std::ostream& os, ProductCategory category )
 {
   switch(category)

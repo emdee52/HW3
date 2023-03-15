@@ -1,6 +1,7 @@
 #include "User.h"
 
-void createMessage(Message &m, std::string data, User * from, User * to) {
+// helper function to initialize message struct
+void createMessage(Message &m, std::string data, User * from, User * to) { 
   m.data = data;
   m.from = from;
   m.to = to;
@@ -53,7 +54,7 @@ Product * productSetup(ProductCategory category) {
   return Product::productFactory(category, price, name, quality);
 }
 
-int User::count = 0;
+int User::count = 0; // static member initialization
 
 bool User::printMessages() {
 

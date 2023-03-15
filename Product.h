@@ -6,8 +6,6 @@
 
 enum class ProductCategory {Vehicle, Furniture, Book, Tool, Clothes, Product}; 
 
-
-
 class Product{
   protected:
     int id_;
@@ -25,16 +23,18 @@ class Product{
 
     Product(double price, std::string name, std::string quality) : id_(++count), price_(price), name_(name), quality_(quality), category(ProductCategory::Product), openBids(true){}
 
+    // Setters
     void setPrice(double price) { price_ = price; }
     void setId(int id) { id_ = id; }
     void setQuality(std::string quality) { quality_ =  quality; }
     void setName(std::string name) { name_ = name; }
     void setBidStatus(bool status);
 
-    void addBid(int uid, double bid);
-    std::map<int, double> getHighestBid();
-    void viewBids();
+    void addBid(int uid, double bid); // adds a bid to the product
+    std::map<int, double> getHighestBid(); // returns a singular map of the current highest bid along with user id
+    void viewBids(); // display current bids on the product
 
+    // Getters
     bool getBidStatus() const { return openBids; }
     double getPrice() const { return price_; }
     int getId() const { return id_; }
@@ -42,7 +42,7 @@ class Product{
     std::string getName() const { return name_; }
     ProductCategory getCategory() const { return category; }
 
-    static Product* productFactory(ProductCategory pc, double bid, std::string name, std::string quality);
+    static Product* productFactory(ProductCategory pc, double bid, std::string name, std::string quality); // factory pattern to generate products
 };
 
 class Vehicle: public Product{

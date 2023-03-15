@@ -71,11 +71,11 @@ class Seller: public User{
 
     Product * addProductForSale(); // interface to list a product for sale
     void productSold(Product * p); // sells a product, removes it from list
-    void viewProducts();
-    void viewSoldProducts();
-    std::vector<Product *> getProducts() { return products; }
-    void overview();
-    std::map<bool, Product *> assignBidStatus();
+    void viewProducts(); // prints out the list of products
+    void viewSoldProducts(); // prints out the list of sold products
+    std::vector<Product *> getProducts() { return products; } // returns the products vector
+    void overview(); // Seller overview including user info, products, sold products
+    std::map<bool, Product *> assignBidStatus(); // open/close bids
 
 };
 
@@ -88,10 +88,10 @@ class Buyer: public User{
     Buyer(double balance, std::string name, std::string addy, std::string phone) : User(balance, name, addy, phone){
       type = UserType::BUYER;
     }
-    void addBidToProduct(int pid, double bid);
-    void viewPurchases();
-    void sendMessage(User &to);
-    void overview();
+    void addBidToProduct(int pid, double bid); // adds buyer's bid to a product
+    void viewPurchases(); // views won bids
+    void sendMessage(User &to); // send a message to buyer whose product you earned
+    void overview(); // get an overview of your bids
 };
 
 #endif
