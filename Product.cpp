@@ -3,10 +3,6 @@
 int Product::count = 0;
 
 void Product::addBid(int uid, double bid) {
-  if (!this->getBidStatus()){
-    std::cout << "[INFO] Bidding is closed" << std::endl;
-    return;
-  }
   bids[uid] = bid;
 }
 
@@ -16,13 +12,15 @@ std::map<int, double> Product::getHighestBid(){
   int uid;
 
   for (const auto &[key, value] : bids){
-    if (maxBid < value){
+    if (maxBid <= value){
       maxBid = value;
       uid = key;
     }
   }
-
-  std::cout << "Highest bid is $" << maxBid << " by User " << uid << std::endl;
+  if (uid == -1)
+    std::cout << "No current bids, base price is $" << maxBid << std::endl;
+  else
+    std::cout << "Highest bid is $" << maxBid << " by User " << uid << std::endl;
 
   highestBid[uid] = maxBid;
   return highestBid;

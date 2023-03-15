@@ -198,8 +198,6 @@ Product * Seller::addProductForSale(){
   
   products.push_back(listing);
 
-  overview();
-
   return listing;
 }
 
@@ -237,7 +235,7 @@ void Seller::viewSoldProducts(){
     std::cout << "   (" << i + 1 << ") " << soldProducts[i]->getName() << ": Price[$" << soldProducts[i]->getPrice() << "], " << "Quality[" << soldProducts[i]->getQuality() << "]" << std::endl;
 }
 
-bool Seller::overview(){
+void Seller::overview(){
   std::cout << "=========OVERVIEW=========" << std::endl;
   std::cout << "Name:    " << this->getName() << std::endl;
   std::cout << "Id:      " << this->getId() << std::endl;
@@ -312,9 +310,6 @@ void Seller::menu(){
   }
 }
 
-
-void Buyer::browseProducts(){}
-
 void Buyer::addBidToProduct(int pid, double bid){
   bids[pid] = bid;
 }
@@ -342,7 +337,22 @@ void Buyer::sendMessage(User &to){
   this->addMessage(m);
 }
 
-bool Buyer::overview(){}
+void Buyer::overview(){
+  std::cout << "Bids placed: " << std::endl;
+
+  if (bids.size() < 1) {
+    std::cout << "  [INFO] No bids" << std::endl;
+    return;
+  }
+
+  for(const auto& elem : bids)
+  {
+    std::cout << "Bid $" << elem.second << " on Product" << elem.first << "\n";
+  }
+  
+  for (int i = 0; i < purchases.size(); i++)
+    std::cout << "   (" << i + 1 << ") " << purchases[i]->getName() << ": Price[$" << purchases[i]->getPrice() << "], " << "Quality[" << purchases[i]->getQuality() << "]" << std::endl;
+}
 
 void Buyer::menu(){
   int option;

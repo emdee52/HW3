@@ -1,3 +1,6 @@
-1,10,1,1,tool,screwdriver,good
-2,20,2,2,clothes,socks,okay
-3,35,3,3,clothes,beanie,new
+1,10,tool,screwdriver,Used-Good
+2,20,clothes,socks,Used-Okay
+3,35,clothes,beanie,New
+4,30,vehicle,car,Used-Okay
+5,10,book,harry potter,Used-Good
+6,3000,vehicle,van,Used-VeryGood

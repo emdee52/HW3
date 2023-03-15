@@ -12,7 +12,6 @@ class Product{
   protected:
     int id_;
     double price_;
-    double maxBid_;
     std::map<int, double> bids;
     std::string name_;
     std::string quality_;
@@ -20,7 +19,9 @@ class Product{
     bool openBids;
     static int count;
   public:
-    Product(): id_(++count), price_(0), name_(""), quality_("New"), category(ProductCategory::Product), openBids(true){}
+    Product(): id_(++count), price_(0), name_(""), quality_("New"), category(ProductCategory::Product), openBids(true){
+      addBid(-1, price_);
+    }
 
     Product(double price, std::string name, std::string quality) : id_(++count), price_(price), name_(name), quality_(quality), category(ProductCategory::Product), openBids(true){}
 

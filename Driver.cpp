@@ -3,6 +3,27 @@
 #include "Driver.h"
 #include "User.h"
 #include <typeinfo>
+#include <fstream>
+#include <string.h>
+
+std::vector<std::string> splitter(std::string str){
+  std::vector<std::string> v;
+  std::string curr = ""; 
+  
+  for(int i = 0; i < str.size(); i++){
+    if(str[i] == ','){
+      if(curr != ""){
+        v.push_back(curr);
+        curr = "";
+      } 
+      continue;
+    }
+    curr += str[i];
+  }
+  if(curr.size() != 0)
+    v.push_back(curr);
+  return v;
+}
 
 std::ostream& operator<<(std::ostream& os, UserType type)
 {
@@ -32,6 +53,8 @@ std::ostream& operator<< ( std::ostream& os, ProductCategory category )
 void Driver::saveBidInfo(Product p){}
 
 void Driver::run(){
+  readUsers();
+  readHistoricalProducts();
   User * user = initializeUser();
   viewUsers();
   menu(user);
@@ -93,7 +116,9 @@ User * Driver::initializeUser(){
   }
 }
 
-void Driver::viewActiveProducts(){
+void Driver::viewActiveProducts(Buyer * buya){
+  int option;
+
   std::cout << "Active products for Sale: " << std::endl;
   for (int i = 0; i < activeProducts.size(); i++)
   {
@@ -104,13 +129,66 @@ void Driver::viewActiveProducts(){
       << std::endl;
     }
   }
+  std::cout << "(0) Exit" << std::endl;
+  std::cout << "[PICK A PRODUCT TO BID OR EXIT]" << std::endl;
+  std::cin >> option;
+
+  if (!activeProducts[option - 1]->getBidStatus()){
+    std::cout << "[INFO] Bidding on this item is closed" << std::endl;
+    return;
+  }
+
+  while (true)
+  {
+    double bid;
+    if (option == 0)
+      return;
+    else {
+      std::cout << "Current highest bid: "<< activeProducts[option - 1]->getHighestBid().begin()->second << std::endl;
+      std::cout << "[Choose a bidding price]" << std::endl;
+      std::cin >> bid;
+      if (bid < activeProducts[option - 1]->getHighestBid().begin()->second){
+        int op;
+        std::cout << "[INFO] Your bid is lower than the highest bid" << std::endl;
+        std::cout << "[DO YOU WISH TO BID AGAIN?] (1) Yes (2) No" << std::endl;
+        std::cin >> op;
+
+        if (op == 2)
+          return;
+
+        continue;
+      }
+
+      if (buya->getBalance() < bid){
+        int op;
+        std::cout << "[INFO] Your balance is lower than your bid" << std::endl;
+        std::cout << "[DO YOU WISH TO BID AGAIN?] (1) Yes (2) No" << std::endl;
+        std::cin >> op;
+        if (op == 2)
+          return;
+
+        continue;
+      }
+
+      if (activeProducts[option - 1]->getPrice() > bid){
+        int op;
+        std::cout << "[INFO] Your bid is lower than the base price" << std::endl;
+        std::cout << "[DO YOU WISH TO BID AGAIN?] (1) Yes (2) No" << std::endl;
+        std::cin >> op;
+        if (op == 2)
+          return;
+
+        continue;
+      }
+
+      activeProducts[option - 1]->addBid(buya->getId(), bid);
+      buya->addBidToProduct(activeProducts[option - 1]->getId(), bid);
+      break;
+    }
+  }
 }
 
-
-void Driver::addBids(Product p){}
-
 std::vector<Product> Driver::getActiveProducts(){}
-std::vector<Product> Driver::getBids(){}
 std::vector<User> Driver::getUsers(){}
 
 void Driver::menu(User * user){
@@ -130,9 +208,25 @@ void Driver::menu(User * user){
       std::cout << "[PICK AN OPTION]" << std::endl;
       std::cin >> option;
       switch (option){
-        case 1:
-          addActiveProducts(sella->addProductForSale());
+        case 1: {
+          Product * p = sella->addProductForSale();
+          std::string category;
+          addActiveProducts(p);
+          std::ofstream outfile;
+          outfile.open("products.csv", std::ios_base::app); // append instead of overwrite
+          if (p->getCategory() == ProductCategory::Book) category = "book";
+          else if (p->getCategory() == ProductCategory::Clothes) category = "clothes";
+          else if (p->getCategory() == ProductCategory::Vehicle) category = "vehicle";
+          else if (p->getCategory() == ProductCategory::Furniture) category = "furniture";
+          else if (p->getCategory() == ProductCategory::Tool) category = "tool";
+          std::string line = std::to_string(p->getId()) + "," + std::to_string((int) p->getPrice()) + "," + category + "," + p->getName() + "," + p->getQuality();
+          outfile << std::endl;
+          outfile << line; 
+
+          std::cout << p->getName() << " listed: Price[$" << p->getPrice() << "], " << "Quality[" << p->getQuality() << "]" << std::endl;
           break;
+        }
+
         case 2: 
           sella->viewMessages();
           break;
@@ -171,7 +265,7 @@ void Driver::menu(User * user){
       switch (option)
       {
       case 1:
-        viewActiveProducts();
+        viewActiveProducts(buya);
         break;
       case 2: 
         buya->viewMessages();
@@ -183,6 +277,7 @@ void Driver::menu(User * user){
         buya->updateInfo();
         break;
       case 5:
+        buya->overview();
         break;
       case 6:
         buya->viewPurchases();
@@ -196,7 +291,6 @@ void Driver::menu(User * user){
     }
   }
 }
-
 
 void Driver::viewUsers(){
   std::cout << "Current users in the system: " << std::endl;
@@ -214,5 +308,58 @@ void Driver::viewUsers(){
     << "Address[" << users[i]->getAddress() << "], "
     << "Phone["   << users[i]->getPhone() << "] "
     << std::endl;
+  }
+}
+
+void Driver::readUsers(){
+  std::vector<std::string> s;
+  std::ifstream intfile("users.csv");
+  std::string line;
+
+  while (std::getline(intfile, line)){
+    User * u;
+    s = splitter(line);
+    // std::cout << line << std::endl;
+    // std::cout << s[0] << std::endl;
+    std::string type = s[0];
+    std::string name = s[1];
+    double balance = std::stod(s[2]);
+    std::string addy = s[3];
+    std::string phone = s[4];
+
+    if (type == "buyer")
+      u = User::userFactory(UserType::BUYER, balance, name, addy, phone);
+    else if (type == "seller")
+      u = User::userFactory(UserType::SELLER, balance, name, addy, phone);
+    
+    addUser(u);
+  }
+}
+
+void Driver::readHistoricalProducts(){
+  std::vector<std::string> s;
+  std::ifstream intfile("products.csv");
+  std::string line;
+  while (intfile >> line){
+    Product * p;
+    s = splitter(line);
+    int buyerId = std::stoi(s[0]);
+    double bid = std::stod(s[1]);
+    std::string type = s[2];
+    std::string name = s[3];
+    std::string quality = s[4];
+
+    if (type == "book")
+      p = Product::productFactory(ProductCategory::Book, bid, name, quality);
+    else if (type == "clothes")
+      p = Product::productFactory(ProductCategory::Clothes, bid, name, quality);
+    else if (type == "vehicle")
+      p = Product::productFactory(ProductCategory::Vehicle, bid, name, quality);
+    else if (type == "furniture")
+      p = Product::productFactory(ProductCategory::Furniture, bid, name, quality);
+    else if (type == "tool")
+      p = Product::productFactory(ProductCategory::Tool, bid, name, quality);
+    
+    addFinishedBid(buyerId, p);
   }
 }

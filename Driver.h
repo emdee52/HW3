@@ -9,11 +9,9 @@ class Driver{
   private:
     Driver(){
       activeProducts = {};
-      bids = {};
       users = {};
     };
     std::vector<Product *> activeProducts;
-    std::vector<Product> bids;
     std::map<int, Product *> finishedBids;
     std::vector<User *> users;
 
@@ -27,18 +25,18 @@ class Driver{
     
     void saveBidInfo(Product p);
     User * initializeUser();
+    void readUsers();
+    void readHistoricalProducts();
     void run();
 
     void addFinishedBid(int uid, Product * p) { finishedBids[uid] = p; }
     void addActiveProducts(Product * p) { activeProducts.push_back(p); }
-    void addBids(Product p);
     void addUser(User * u) { users.push_back(u); }
 
     void viewUsers();
-    void viewActiveProducts();
+    void viewActiveProducts(Buyer * buya);
 
     std::vector<Product> getActiveProducts();
-    std::vector<Product> getBids();
     std::map<int, Product *> getFinishedBids() const { return finishedBids; }
     std::vector<User> getUsers();
 

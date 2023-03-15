@@ -53,7 +53,7 @@ class User{
     void viewBalance();
     void respond(int index);
 
-    virtual bool overview(){};
+    virtual void overview(){};
     static User* userFactory(UserType type, double balance, std::string name, std::string addy, std::string phone);
 };
 
@@ -70,7 +70,7 @@ class Seller: public User{
     Product * addProductForSale();
     void viewProducts();
     void viewSoldProducts();
-    bool overview();
+    void overview();
     void assignBidStatus();
     void menu();
 
@@ -85,12 +85,10 @@ class Buyer: public User{
     Buyer(double balance, std::string name, std::string addy, std::string phone) : User(balance, name, addy, phone){
       type = UserType::BUYER;
     }
-
-    void browseProducts();
     void addBidToProduct(int pid, double bid);
     void viewPurchases();
     void sendMessage(User &to);
-    bool overview();
+    void overview();
     void menu();
 };
 
